@@ -1,10 +1,10 @@
 #!/bin/bash
 #Ubuntu Desktop
-sudo apt-get --install-suggests install ubuntu-desktop light-themes unity-2d unity-icon-theme human-icon-theme ubuntu-wallpapers
+lxc exec rabidavid -- apt install ubuntu-desktop
 
 #Install Xorg and x11vnc
-sudo aptitude install xorg xserver-xorg-video-dummy x11vnc
-sudo dpkg-reconfigure x11-common
+lxc exec rabidavid -- aptitude install xorg xserver-xorg-video-dummy x11vnc
+lxc exec rabidavid -- dpkg-reconfigure x11-common
 
 #Configure Xorg to use the Dummy video adapter
 Section "Monitor"
@@ -36,7 +36,6 @@ Monitor "Monitor0"
 EndSection
 
 #startupVNC
-rm -fr .X*
-su -c '/usr/bin/startx -- :1' palehorse &
-sleep 4
-su -c '/usr/bin/x11vnc -forever -rfbport 5901 -rfbauth /home/palehorse/.vnc/passwd -auth guess -display :1 -bg -shared -noxdamage -xrandr' palehorse
+lxc exec rabidavid -- rm -fr .X*
+lxc exec rabidavid -- su -c '/usr/bin/startx -- :1' palehorse & sleep 4
+lxc exec rabidavid -- su -c '/usr/bin/x11vnc -forever -rfbport 5901 -rfbauth /home/palehorse/.vnc/passwd -auth guess -display :1 -bg -shared -noxdamage -xrandr' palehorse
